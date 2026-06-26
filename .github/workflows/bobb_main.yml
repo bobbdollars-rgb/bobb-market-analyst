@@ -1,0 +1,73 @@
+# .github/workflows/bobb_main.yml
+#
+# BOBB MARKET ANALYST v3.0 — Single Workflow
+# Runs every minute. main.py handles internal scheduling:
+#   Every minute    → news_detector
+#   Every 15 minutes → signal_engine + trade_tracker
+#   Daily 07:00 WIB → market_cycle
+#   Sat  08:00 WIB  → weekly_report + XGBoost retrain
+#
+# Required Secrets:
+#   BOT_TOKEN          — Telegram bot token
+#   CHAT_ID            — Telegram chat/channel ID
+#   TWELVEDATA_API_KEY — TwelveData API key (free tier, 800 req/day)
+
+name: Bobb Market Analyst v3.0
+
+on:
+  schedule:
+    - cron: "* * * * *"    # every minute
+  workflow_dispatch:
+
+concurrency:
+  group: bobb-main
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write        # needed for git push trades.json
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # full history for git push
+
+      - name: Restore OHLC cache
+        uses: actions/cache@v4
+        with:
+          path: data/ohlc_cache.json
+          key: ohlc-cache-${{ github.run_id }}
+          restore-keys: |
+            ohlc-cache-
+        # This restores the most recent cache from previous runs
+        # so TwelveData is only called when TTL expires (not every minute)
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests pandas numpy xgboost scikit-learn
+
+      - name: Run Bobb Market Analyst
+        env:
+          BOT_TOKEN:          ${{ secrets.BOT_TOKEN }}
+          CHAT_ID:            ${{ secrets.CHAT_ID }}
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+          BOBB_NEWSAPI_KEY:   ${{ secrets.BOBB_NEWSAPI_KEY }}
+        run: python main.py
+
+      - name: Save OHLC cache
+        uses: actions/cache/save@v4
+        if: always()          # save cache even if main.py has errors
+        with:
+          path: data/ohlc_cache.json
+          key: ohlc-cache-${{ github.run_id }}
