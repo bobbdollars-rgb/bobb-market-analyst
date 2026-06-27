@@ -225,7 +225,7 @@ def fetch_multi_timeframe(pair: str, limit_m5: int = 300, limit_h1: int = 300,
                            limit_h4: int = 300, limit_d1: int = 300) -> Dict[str, pd.DataFrame]:
     """Fetches M5 (LTF), H1 (H1 bias), H4 (structure), D1 (HTF bias) for one pair."""
     return {
-        "M5": fetch_ohlc(pair, "M5", limit_m5),
+        
         "H1": fetch_ohlc(pair, "H1", limit_h1),
         "H4": fetch_ohlc(pair, "H4", limit_h4),
         "D1": fetch_ohlc(pair, "D1", limit_d1),
