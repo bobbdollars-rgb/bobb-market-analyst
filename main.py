@@ -40,12 +40,12 @@ def _log(tag: str, msg: str):
 
 def should_run_signal(now: dt.datetime) -> bool:
     """Signal engine runs every 5 minutes (M5 candle close)."""
-    return now.minute % 15 == 0
+    return True
 
 
 def should_run_market_cycle(now: dt.datetime) -> bool:
     """Market cycle forecast runs once daily at 07:00 WIB."""
-    return now.hour == 7 and now.minute == 0
+    return True
 
 
 def should_run_weekly_report(now: dt.datetime) -> bool:
