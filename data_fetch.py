@@ -207,7 +207,7 @@ def _fetch_binance(symbol: str, interval: str, limit: int = 300,
 
 
 def fetch_ohlc(pair: str, interval: str, limit: int = 300) -> pd.DataFrame:
-    """interval: 'M5' | 'H1' | 'H4' | 'D1'. Routes: crypto -> Binance,
+    """interval: '5min' | '1h' | '4h' | 'D1'. Routes: crypto -> Binance,
     metals/forex -> TwelveData with smart cache to minimize API requests."""
     if pair not in CRYPTO_PAIRS:
         cached = _cache_get(pair, interval)
