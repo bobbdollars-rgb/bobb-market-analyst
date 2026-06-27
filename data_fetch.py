@@ -47,7 +47,7 @@ TWELVEDATA_INTERVAL_MAP = {"M5": "5min", "M15": "15min", "H1": "1h", "H4": "4h",
 BINANCE_INTERVAL_MAP = {"M15": "15m", "H1": "1h", "H4": "4h", "D1": "1d"}
 
 ALL_PAIRS: List[str] = [
-    "XAUUSD", "BTCUSDT",
+    "XAUUSD",
     "EURUSD", "GBPUSD", "USDJPY", "GBPJPY",
 ]
 MINOR_PAIRS: List[str] = []  # semua sudah di ALL_PAIRS
