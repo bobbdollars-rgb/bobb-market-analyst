@@ -43,7 +43,7 @@ TWELVEDATA_SYMBOL_MAP = {
     "EURUSD": "EUR/USD", "GBPUSD": "GBP/USD",
     "USDJPY": "USD/JPY", "GBPJPY": "GBP/JPY",
 }
-TWELVEDATA_INTERVAL_MAP = {"M15": "15min", "H1": "1h", "H4": "4h", "D1": "1day"}
+TWELVEDATA_INTERVAL_MAP = {"M5": "5min", "M15": "15min", "H1": "1h", "H4": "4h", "D1": "1day"}
 BINANCE_INTERVAL_MAP = {"M15": "15m", "H1": "1h", "H4": "4h", "D1": "1d"}
 
 ALL_PAIRS: List[str] = [
